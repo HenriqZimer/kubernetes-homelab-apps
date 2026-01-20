@@ -1,0 +1,203 @@
+# ===========================================
+# PVs e PVCs Estáticos - Sempre usam as mesmas pastas no NFS
+# ===========================================
+
+# PV Estático para Jenkins
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: portainer-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/portainer/app
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV Estático para Jenkins Artifacts
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: romm-config-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/romm/config
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV Estático para SonarQube
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: romm-library-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: slowbro.henriqzimer.com.br
+    path: /mnt/slowbro/retrogames/roms/
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV Estático para PostgreSQL do SonarQube
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: romm-resources-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/romm/resources
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Registry
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: romm-assets-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/romm/assets
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Registry
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: romm-mariadb-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/romm/mariadb
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor JobService
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-config-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/jellyfin/config
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Database
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-media-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: slowbro.henriqzimer.com.br
+    path: /mnt/slowbro/medias
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Redis
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-cache-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/jellyfin/cache
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# # PV para Harbor Trivy
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: harbor-trivy-pv
+# spec:
+#   capacity:
+#     storage: 5Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   storageClassName: nfs-static
+#   nfs:
+#     server: altaria.henriqzimer.com.br
+#     path: /mnt/altaria/kubernetes/harbor/trivy
+#   mountOptions:
+#     - vers=4.1
+#     - hard
+#     - intr

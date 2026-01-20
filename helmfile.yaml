@@ -1,0 +1,31 @@
+repositories:
+  - name: portainer
+    url: https://portainer.github.io/k8s/
+
+  - name: henriqzimer
+    url: https://henriqzimer.github.io/romm-helm-chart/
+
+releases:
+  - name: portainer
+    namespace: portainer
+    createNamespace: true
+    chart: portainer/portainer
+    version: 2.33.6
+    values:
+      - values/portainer/values.yaml
+  
+  - name: romm
+    namespace: romm
+    createNamespace: true
+    chart: henriqzimer/romm
+    version: 1.0.4
+    values:
+      - values/romm/values.yaml
+  
+  - name: jellyfin
+    namespace: jellyfin
+    createNamespace: true
+    chart: jellyfin/jellyfin
+    version: 2.7.0
+    values:
+      - values/jellyfin/values.yaml

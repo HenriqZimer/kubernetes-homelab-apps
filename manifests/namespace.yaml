@@ -1,0 +1,39 @@
+---
+# Namespace portainer
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portainer
+  labels:
+    app.kubernetes.io/name: portainer
+    app.kubernetes.io/component: container-management
+    app.kubernetes.io/managed-by: helmfile
+    environment: production
+---
+# Namespace romm
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: romm
+  labels:
+    app.kubernetes.io/name: romm
+    app.kubernetes.io/component: media-management
+    app.kubernetes.io/managed-by: helmfile
+    environment: production  
+---
+# Namespace jellyfin
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jellyfin
+  labels:
+    app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/component: media-server
+    app.kubernetes.io/managed-by: helmfile
+    environment: production
+# ---
+# # Namespace argocd
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: argocd
