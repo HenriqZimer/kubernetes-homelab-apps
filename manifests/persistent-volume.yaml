@@ -182,22 +182,82 @@ spec:
     - hard
     - intr
 ---
-# # PV para Harbor Trivy
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: harbor-trivy-pv
-# spec:
-#   capacity:
-#     storage: 5Gi
-#   accessModes:
-#     - ReadWriteOnce
-#   persistentVolumeReclaimPolicy: Retain
-#   storageClassName: nfs-static
-#   nfs:
-#     server: altaria.henriqzimer.com.br
-#     path: /mnt/altaria/kubernetes/harbor/trivy
-#   mountOptions:
-#     - vers=4.1
-#     - hard
-#     - intr
+# PV para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: meu-site-mongodb-pv
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/meu-site/mongodb
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pihole-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/pihole/app
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pihole-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/pihole/app
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr
+---
+# PV para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vaultwarden-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: altaria.henriqzimer.com.br
+    path: /mnt/altaria/kubernetes/vaultwarden/app
+  mountOptions:
+    - vers=4.1
+    - hard
+    - intr

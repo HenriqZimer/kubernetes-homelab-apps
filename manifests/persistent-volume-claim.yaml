@@ -136,21 +136,53 @@ spec:
   resources:
     requests:
       storage: 10Gi
-# ---
-# # PVC para Harbor Trivy
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: harbor-trivy-pvc
-#   namespace: harbor
-#   labels:
-#     app: harbor
-#     component: trivy
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: nfs-static
-#   volumeName: harbor-trivy-pv
-#   resources:
-#     requests:
-#       storage: 5Gi
+---
+# PVC para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meu-site-mongodb-pvc
+  namespace: meu-site
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: meu-site
+    meta.helm.sh/release-namespace: meu-site
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-static
+  volumeName: meu-site-mongodb-pv
+  resources:
+    requests:
+      storage: 8Gi
+---
+# PVC para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pihole-pvc
+  namespace: pihole
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-static
+  volumeName: pihole-pv
+  resources:
+    requests:
+      storage: 1Gi
+---
+# PVC para Harbor Trivy
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vaultwarden-pvc
+  namespace: vaultwarden
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-static
+  volumeName: vaultwarden-pv
+  resources:
+    requests:
+      storage: 10Gi

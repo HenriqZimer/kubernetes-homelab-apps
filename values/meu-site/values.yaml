@@ -1,0 +1,274 @@
+# Example values for Meu Site - Use this as a template for your deployment
+# Copy this file and customize it for your environment (dev, staging, production)
+
+# -- Number of old ReplicaSets to retain for rollback history
+revisionHistoryLimit: 3
+
+# -- Image pull secrets to authenticate with private repositories
+imagePullSecrets: []
+
+# -- Override the default name of the chart
+nameOverride: ""
+# -- Override the default full name of the chart
+fullnameOverride: ""
+
+# -- Annotations to add to the pod
+podAnnotations: {}
+# -- Additional labels to add to the pod
+podLabels: {}
+
+# -- Security context for the pod
+podSecurityContext: {}
+
+# -- Security context for the container
+securityContext: {}
+
+# -- Node selector for pod scheduling
+nodeSelector: {}
+
+# -- Tolerations for pod scheduling
+tolerations: []
+
+# -- Affinity rules for pod scheduling
+affinity: {}
+
+# -- Secrets configuration
+# Two modes supported:
+# 1. Internal secrets (enabled: true) - Chart creates secrets from data below
+# 2. External secrets (enabled: false) - Use ExternalSecrets or pre-created secrets
+secrets:
+  # -- Enable internal secret creation. Set to false to use ExternalSecrets or existing secrets
+  enabled: false
+  # -- Secret name for database credentials
+  name: database-credentials
+  # -- Secret data (only used when enabled: true)
+  # When using ExternalSecrets, set enabled: false and use envFrom to load secrets
+  # IMPORTANT: Change these values before using in production!
+  data:
+    MONGO_INITDB_ROOT_USERNAME: "admin"
+    MONGO_INITDB_ROOT_PASSWORD: "changeme"
+    MONGO_INITDB_DATABASE: "myapp_db"
+    MONGODB_URI: "mongodb://admin:changeme@database:27017/myapp_db?authSource=admin"
+
+# -- Frontend application configuration
+frontend:
+  # -- Number of frontend replicas
+  replicaCount: 1
+
+  # -- Container image configuration
+  image:
+    # -- Container image repository for frontend
+    # Examples:
+    #   - Docker Hub: docker.io/username/myapp-frontend
+    #   - Harbor: harbor.example.com/project/myapp-frontend
+    #   - GHCR: ghcr.io/username/myapp-frontend
+    repository: docker.io/henriquezimermann/meu-site-frontend
+    # -- Frontend container image tag
+    tag: "latest"
+    # -- Image pull policy (Always, IfNotPresent, or Never)
+    pullPolicy: IfNotPresent
+
+  # -- Resources requests and limits for frontend container
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+  # -- Service configuration
+  service:
+    # -- Service type (ClusterIP, NodePort, or LoadBalancer)
+    type: ClusterIP
+    # -- Port for the frontend service
+    port: 80
+    # -- Name of the port in the service
+    portName: http
+    # -- Annotations for the service
+    annotations: {}
+    # -- Labels for the service
+    labels: {}
+
+  # -- Additional environment variables for the container
+  env: []
+  #   - name: TZ
+  #     value: "UTC"
+  #   - name: API_URL
+  #     value: "http://backend:5000"
+
+  # -- Load environment variables from ConfigMap or Secret
+  envFrom: []
+  #   - secretRef:
+  #       name: frontend-credentials
+
+# -- Backend application configuration
+backend:
+  # -- Number of backend replicas
+  replicaCount: 1
+
+  # -- Container image configuration
+  image:
+    # -- Container image repository for backend
+    # Examples:
+    #   - Docker Hub: docker.io/username/myapp-backend
+    #   - Harbor: harbor.example.com/project/myapp-backend
+    #   - GHCR: ghcr.io/username/myapp-backend
+    repository: docker.io/henriquezimermann/meu-site-backend
+    # -- Backend container image tag
+    tag: "latest"
+    # -- Image pull policy (Always, IfNotPresent, or Never)
+    pullPolicy: IfNotPresent
+
+  # -- Resources requests and limits for backend container
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+  # -- Service configuration
+  service:
+    # -- Service type (ClusterIP, NodePort, or LoadBalancer)
+    type: ClusterIP
+    # -- Port for the backend service
+    port: 5000
+    # -- Name of the port in the service
+    portName: http
+    # -- Annotations for the service
+    annotations: {}
+    # -- Labels for the service
+    labels: {}
+
+  # -- Additional environment variables for the container
+  env: []
+  #   - name: TZUTC"
+  #   - name: NODE_ENV
+  #     value: "production"
+
+  # -- Load environment variables from ConfigMap or Secret
+  # Example for ExternalSecrets (set secrets.enabled: false):
+  envFrom:
+    - secretRef:
+        name: meu-site-database-credentials
+  #   - secretRef:
+  #       name:
+  #       name: meu-site-backend-credentials
+
+# -- MongoDB database configuration
+database:
+  # -- Enable MongoDB deployment
+  enabled: true
+
+  # -- Number of database replicas (keep at 1 for single instance)
+  replicaCount: 1
+
+  # -- Container image configuration
+  image:
+    # -- Container image repository for MongoDB
+    repository: docker.io/mongo
+    # -- MongoDB container image tag
+    tag: "latest"
+    # -- Image pull policy (Always, IfNotPresent, or Never)
+    pullPolicy: IfNotPresent
+
+  # -- Command arguments for MongoDB
+  args:
+    - "--bind_ip"
+    - "0.0.0.0"
+
+  # -- Resources requests and limits for database container
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # -- Service configuration
+  service:
+    # -- Service type (ClusterIP, NodePort, or LoadBalancer)
+    type: ClusterIP
+    # -- Port for the database service
+    port: 27017
+    # -- Name of the port in the service
+    portName: mongodb
+    # -- Annotations for the service
+    annotations: {}
+    # -- Labels for the service
+    labels: {}
+
+  # -- Additional environment variables for the container
+  env: []
+  #   - name: TZ
+  #     value: "UTC"
+
+  # -- Load environment variables from ConfigMap or Secret
+  # This is where database credentials should be loaded from
+  envFrom:
+    - secretRef:
+        name: meu-site-database-credentials
+
+  # -- Database persistence
+  persistence:
+    # -- Enable persistent storage for database
+    enabled: true
+    # -- Type of volume (pvc, hostPath, emptyDir)
+    type: pvc
+    # -- Path on the host node, only used if type is 'hostPath'
+    hostPath: ""
+    # -- Mount path inside container
+    mountPath: /data/db
+    # -- PVC specific settings
+    accessMode: ReadWriteOnce
+    # -- Size of the persistent volume
+    size: 8Gi
+    # -- Custom annotations to be added to the PVC
+    annotations: {}
+    # -- If undefined or set to null, no storageClassName spec is set
+    storageClass: ""
+    # -- Use an existing PVC for this mount
+    existingClaim: ""
+    # -- PVC name (only used when creating new PVC)
+    pvcName: meu-site-mongodb-pvc
+
+# -- Ingress configuration
+ingress:
+  # -- Enable ingress
+  enabled: true
+  # -- Ingress class (nginx, traefik, etc.)
+  className: nginx
+  # -- Ingress annotations
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  # -- Ingress hosts and paths
+  hosts:
+    - host: henriqzimer.com.br
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: meu-site-frontend
+              port: 80
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              name: meu-site-backend
+              port: 5000
+  # -- TLS configuration
+  tls:
+    - secretName: wildcard-henriqzimer-tls
+      hosts:
+        - henriqzimer.com.br

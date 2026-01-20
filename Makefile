@@ -1,4 +1,4 @@
-.PHONY: help namespaces pvcs cleanup-pvs secrets helm deploy status validate clean logs-portainer logs-jellyfin logs-romm port-forward-portainer port-forward-jellyfin port-forward-romm
+.PHONY: help namespaces pvcs cleanup-pvs secrets helm deploy status validate clean logs-portainer logs-jellyfin logs-romm port-forward-portainer port-forward-jellyfin port-forward-romm port-forward-meu-site port-forward-pihole
 
 # Colors for output
 GREEN  := \033[0;32m
@@ -32,7 +32,7 @@ namespaces: ## Create namespaces
 
 cleanup-pvs: ## Release PersistentVolumes stuck in Released state
 	@echo "$(BLUE)🔧 Checking and releasing PersistentVolumes...$(RESET)"
-	@for pv in portainer-pv jellyfin-pv romm-pv; do \
+	@for pv in portainer-pv jellyfin-pv romm-pv meu-site-mongodb-pv pihole-pv vaultwarden-pv; do \
 		if kubectl get pv $$pv >/dev/null 2>&1; then \
 			STATUS=$$(kubectl get pv $$pv -o jsonpath='{.status.phase}'); \
 			if [ "$$STATUS" = "Released" ]; then \
@@ -83,18 +83,21 @@ status: ## Check deployment status
 	@echo "$(BLUE)📊 Checking deployment status...$(RESET)"
 	@echo ""
 	@echo "$(YELLOW)Namespaces:$(RESET)"
-	@kubectl get namespaces | grep -E '(portainer|jellyfin|romm)' || echo "  No namespaces found"
+	@kubectl get namespaces | grep -E '(portainer|jellyfin|romm|meu-site|pihole|vaultwarden)' || echo "  No namespaces found"
 	@echo ""
 	@echo "$(YELLOW)Pods:$(RESET)"
 	@kubectl get pods -n portainer -o wide 2>/dev/null || echo "  Portainer namespace not found"
 	@kubectl get pods -n jellyfin -o wide 2>/dev/null || echo "  Jellyfin namespace not found"
 	@kubectl get pods -n romm -o wide 2>/dev/null || echo "  ROMM namespace not found"
+	@kubectl get pods -n meu-site -o wide 2>/dev/null || echo "  Meu-site namespace not found"
+	@kubectl get pods -n pihole -o wide 2>/dev/null || echo "  Pihole namespace not found"
+	@kubectl get pods -n vaultwarden -o wide 2>/dev/null || echo "  Vaultwarden namespace not found"
 	@echo ""
 	@echo "$(YELLOW)PersistentVolumeClaims:$(RESET)"
-	@kubectl get pvc -A | grep -E '(portainer|jellyfin|romm)' || echo "  No PVCs found"
+	@kubectl get pvc -A | grep -E '(portainer|jellyfin|romm|meu-site|pihole|vaultwarden)' || echo "  No PVCs found"
 	@echo ""
 	@echo "$(YELLOW)Ingress:$(RESET)"
-	@kubectl get ingress -A | grep -E '(portainer|jellyfin|romm)' || echo "  No Ingress found"
+	@kubectl get ingress -A | grep -E '(portainer|jellyfin|romm|meu-site|pihole|vaultwarden)' || echo "  No Ingress found"
 	@echo ""
 
 validate: ## Validate Kubernetes manifests
@@ -152,6 +155,14 @@ port-forward-jellyfin: ## Port-forward to Jellyfin (localhost:8096)
 	@echo "$(BLUE)🔌 Port-forwarding to Jellyfin on http://localhost:8096$(RESET)"
 	@kubectl port-forward -n jellyfin svc/jellyfin 8096:8096
 
-port-forward-romm: ## Port-forward to ROMM (localhost:8085)
-	@echo "$(BLUE)🔌 Port-forwarding to ROMM on http://localhost:8085$(RESET)"
-	@kubectl port-forward -n romm svc/romm 8085:80
+port-forward-romm: ## Port-forward to ROMM (localhost:8080)
+	@echo "$(BLUE)🔌 Port-forwarding to ROMM on http://localhost:8080$(RESET)"
+	@kubectl port-forward -n romm svc/romm 8080:8080
+
+port-forward-meu-site: ## Port-forward to Meu-site (localhost:8081)
+	@echo "$(BLUE)🔌 Port-forwarding to Meu-site on http://localhost:8081$(RESET)"
+	@kubectl port-forward -n meu-site svc/meu-site-frontend 8081:80
+
+port-forward-pihole: ## Port-forward to Pihole (localhost:8082)
+	@echo "$(BLUE)🔌 Port-forwarding to Pihole on http://localhost:8082$(RESET)"
+	@kubectl port-forward -n pihole svc/pihole-web 8082:80

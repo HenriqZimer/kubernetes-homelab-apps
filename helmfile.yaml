@@ -5,6 +5,18 @@ repositories:
   - name: henriqzimer
     url: https://henriqzimer.github.io/romm-helm-chart/
 
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+
+  - name: meu-site
+    url: https://henriqzimer.github.io/meu-site-helm-chart/
+
+  - name: mojo2600
+    url: https://mojo2600.github.io/pihole-kubernetes/
+
+  - name: vaultwarden
+    url: https://guerzon.github.io/vaultwarden
+
 releases:
   - name: portainer
     namespace: portainer
@@ -13,7 +25,7 @@ releases:
     version: 2.33.6
     values:
       - values/portainer/values.yaml
-  
+
   - name: romm
     namespace: romm
     createNamespace: true
@@ -21,7 +33,7 @@ releases:
     version: 1.0.4
     values:
       - values/romm/values.yaml
-  
+
   - name: jellyfin
     namespace: jellyfin
     createNamespace: true
@@ -29,3 +41,27 @@ releases:
     version: 2.7.0
     values:
       - values/jellyfin/values.yaml
+
+  - name: meu-site
+    namespace: meu-site
+    createNamespace: true
+    chart: meu-site/meu-site
+    version: 1.0.0
+    values:
+      - values/meu-site/values.yaml
+
+  - name: pihole
+    namespace: pihole
+    createNamespace: true
+    chart: mojo2600/pihole
+    version: 2.35.0
+    values:
+      - values/pihole/values.yaml
+  
+  - name: vaultwarden
+    namespace: vaultwarden
+    createNamespace: true
+    chart: vaultwarden/vaultwarden 
+    version: 0.34.4
+    values:
+      - values/vaultwarden/values.yaml

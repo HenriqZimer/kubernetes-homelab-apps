@@ -31,9 +31,36 @@ metadata:
     app.kubernetes.io/component: media-server
     app.kubernetes.io/managed-by: helmfile
     environment: production
-# ---
-# # Namespace argocd
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: argocd
+---
+# Namespace meu-site
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: meu-site
+  labels:
+    app.kubernetes.io/name: meu-site
+    app.kubernetes.io/component: portfolio-website
+    app.kubernetes.io/managed-by: helmfile
+    environment: production
+---
+# Namespace meu-site
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pihole
+  labels:
+    app.kubernetes.io/name: pihole
+    app.kubernetes.io/component: network-ad-blocker
+    app.kubernetes.io/managed-by: helmfile
+    environment: production
+---
+# Namespace meu-site
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vaultwarden
+  labels:
+    app.kubernetes.io/name: vaultwarden
+    app.kubernetes.io/component: password-manager
+    app.kubernetes.io/managed-by: helmfile
+    environment: production
