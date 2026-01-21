@@ -32,7 +32,7 @@ namespaces: ## Create namespaces
 
 cleanup-pvs: ## Release PersistentVolumes stuck in Released state
 	@echo "$(BLUE)🔧 Checking and releasing PersistentVolumes...$(RESET)"
-	@for pv in portainer-pv jellyfin-pv romm-pv meu-site-mongodb-pv pihole-pv vaultwarden-pv; do \
+	@for pv in portainer-pv jellyfin-pv romm-assets-pv romm-config-pv romm-library-pv romm-mariadb-pv romm-resources-pv meu-site-mongodb-pv pihole-pv vaultwarden-pv; do \
 		if kubectl get pv $$pv >/dev/null 2>&1; then \
 			STATUS=$$(kubectl get pv $$pv -o jsonpath='{.status.phase}'); \
 			if [ "$$STATUS" = "Released" ]; then \
