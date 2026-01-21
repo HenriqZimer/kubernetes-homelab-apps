@@ -2,7 +2,7 @@
 # PVs e PVCs Estáticos - Sempre usam as mesmas pastas no NFS
 # ===========================================
 
-# PV Estático para Jenkins
+# PV Estático para Portainer
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -22,7 +22,7 @@ spec:
     - hard
     - intr
 ---
-# PV Estático para Jenkins Artifacts
+# PV Estático para RoMM Config
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -42,7 +42,7 @@ spec:
     - hard
     - intr
 ---
-# PV Estático para SonarQube
+# PV Estático para RoMM Library
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -51,7 +51,7 @@ spec:
   capacity:
     storage: 100Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-static
   nfs:
@@ -62,7 +62,7 @@ spec:
     - hard
     - intr
 ---
-# PV Estático para PostgreSQL do SonarQube
+# PV Estático para RoMM Resources
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -82,7 +82,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Registry
+# PV Estático para RoMM Assets
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -102,7 +102,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Registry
+# PV Estático para RoMM MariaDB
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -122,7 +122,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor JobService
+# PV Estático para Jellyfin Config
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -142,7 +142,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Database
+# PV Estático para Jellyfin Media
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -162,7 +162,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Redis
+# PV Estático para Jellyfin Cache
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -182,7 +182,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Trivy
+# PV Estático para Meu-site MongoDB
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -202,7 +202,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Trivy
+# PV Estático para Pihole
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -222,27 +222,7 @@ spec:
     - hard
     - intr
 ---
-# PV para Harbor Trivy
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pihole-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs-static
-  nfs:
-    server: altaria.henriqzimer.com.br
-    path: /mnt/altaria/kubernetes/pihole/app
-  mountOptions:
-    - vers=4.1
-    - hard
-    - intr
----
-# PV para Harbor Trivy
+# PV Estático para Vaultwarden
 apiVersion: v1
 kind: PersistentVolume
 metadata:

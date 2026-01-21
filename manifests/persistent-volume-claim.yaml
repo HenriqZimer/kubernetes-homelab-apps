@@ -2,7 +2,7 @@
 # PVs e PVCs Estáticos - Sempre usam as mesmas pastas no NFS
 # ===========================================
 
-# PVC para Jenkins
+# PVC Estático para Portainer
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -20,7 +20,7 @@ spec:
     requests:
       storage: 10Gi
 ---
-# PVC para Jenkins
+# PVC Estático para RoMM Config
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -35,7 +35,7 @@ spec:
     requests:
       storage: 1Gi
 ---
-# PVC para PostgreSQL do SonarQube
+# PVC Estático para RoMM Library
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -43,13 +43,14 @@ metadata:
   namespace: romm
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: nfs-static
+  volumeName: romm-library-pv
   resources:
     requests:
       storage: 100Gi
 ---
-# PVC para Harbor Registry
+# PVC Estático para RoMM Resources
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -64,7 +65,7 @@ spec:
     requests:
       storage: 10Gi
 ---
-# PVC para SonarQube
+# PVC Estático para RoMM Assets
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -74,11 +75,12 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: nfs-static
+  volumeName: romm-assets-pv
   resources:
     requests:
       storage: 5Gi
 ---
-# PVC para SonarQube
+# PVC Estático para RoMM MariaDB
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -88,11 +90,12 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: nfs-static
+  volumeName: romm-mariadb-pv
   resources:
     requests:
       storage: 10Gi
 ---
-# PVC para Harbor JobService
+# PVC Estático para Jellyfin Config
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -107,7 +110,7 @@ spec:
     requests:
       storage: 5Gi
 ---
-# PVC para Harbor Database
+# PVC Estático para Jellyfin Media
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -122,7 +125,7 @@ spec:
     requests:
       storage: 100Gi
 ---
-# PVC para Harbor Redis
+# PVC Estático para Jellyfin Cache
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -137,7 +140,7 @@ spec:
     requests:
       storage: 10Gi
 ---
-# PVC para Harbor Trivy
+# PVC Estático para Meu-site MongoDB
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -157,7 +160,7 @@ spec:
     requests:
       storage: 8Gi
 ---
-# PVC para Harbor Trivy
+# PVC Estático para Pihole
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -172,7 +175,7 @@ spec:
     requests:
       storage: 1Gi
 ---
-# PVC para Harbor Trivy
+# PVC Estático para Vaultwarden
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
